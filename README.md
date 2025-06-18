@@ -39,8 +39,8 @@ The recommended method for installation is to use **Conda**, which will handle a
 First, clone this repository to your local machine.
 
 ```bash
-git clone [https://github.com/your-username/your-repository-name.git](https://github.com/your-username/your-repository-name.git)
-cd your-repository-name
+git clone https://github.com/moshi321/UNLV-NPM-Candida-auris.git
+cd UNLV-NPM-Candida-auris
 ```
 
 **Step 2: Create and Activate the Conda Environment**
