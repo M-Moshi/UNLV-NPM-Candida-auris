@@ -1,0 +1,24 @@
+# Conda environment configuration for the UNLV Amplicon Pipeline
+# To create the environment, run: conda env create -f environment.yml
+# To activate the environment, run: conda activate amplicon-pipeline
+name: amplicon-pipeline
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  # === Core Bioinformatics Tools ===
+  - bwa
+  - fastp
+  - fgbio
+  - samtools
+  - ivar
+  - qualimap
+  - kraken2
+  - parallel # Package name for GNU Parallel
+  - pigz
+  - nextflow
+
+  # === Python and Libraries ===
+  - python=3.10
+  - pandas
