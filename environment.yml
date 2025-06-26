@@ -1,7 +1,7 @@
 # Conda environment configuration for the UNLV Amplicon Pipeline
 # To create the environment, run: conda env create -f environment.yml
 # To activate the environment, run: conda activate amplicon-pipeline
-name: amplicon-pipeline
+name: npm-candida
 channels:
   - bioconda
   - conda-forge
@@ -14,7 +14,6 @@ dependencies:
   - samtools
   - ivar
   - qualimap
-  - kraken2
   - parallel # Package name for GNU Parallel
   - pigz
   - nextflow
