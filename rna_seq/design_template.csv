@@ -1,0 +1,7 @@
+sample,condition,replicate
+Control_1,Control,1
+Control_2,Control,2
+Control_3,Control,3
+Treated_1,Treated,1
+Treated_2,Treated,2
+Treated_3,Treated,3
