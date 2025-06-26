@@ -53,7 +53,6 @@ echo "Log file: $log_file" >> $log_file
 echo "FASTQ Directory: $1" >> $log_file
 echo "Output Directory: $out_dir" >> $log_file
 echo "Reference Genome: $3" >> $log_file
-echo "Kraken Database: $kraken_db" >> $log_file
 echo "" >> $log_file
 echo "Hardware Information:" >> $log_file
 echo "CPU type: $(lscpu | grep "Model name" | awk '{$1=$2=""; print $0}')" >> $log_file
@@ -63,7 +62,6 @@ echo "Memory available: $(free -h | grep Mem | awk '{print $7}')" >> $log_file
 echo "Disk space available in output folder drive: $(df -h $out_dir | tail -n 1 | awk '{print $4}')" >> $log_file
 echo "" >> $log_file
 echo "Software Used:" >> $log_file
-echo "fastqc: $(fastqc --version)" >> $log_file
 fastp -v 2>&1 | head | tee -a $log_file
 echo "bwa: $(bwa 2>&1 | head -n 3 | tail -n 1)" >> $log_file
 echo "samtools: $(samtools --version | head -n 1)" >> $log_file
@@ -73,8 +71,6 @@ echo "bcftools: $(bcftools --version | head -n 1)" >> $log_file
 echo "multiqc: $(multiqc --version)" >> $log_file
 echo "qualimap: $(qualimap --version | head -n 4 | tail -n 1 )" >> $log_file
 echo "parallel: $(parallel --version | head -n 1)" >> $log_file
-echo "kraken2: $(kraken2 --version | head -n 1)" >> $log_file
-echo "bracken: $(bracken -v | head -n 1)" >> $log_file
 echo "Number of paired ends reads found: $number_of_files" >> $log_file
 echo "Found the following fastq files:" >> $log_file
 echo "$fastq_files" >> $log_file
@@ -96,11 +92,11 @@ mkdir -p $2/depth
 mkdir -p $2/filtered_tsv
 mkdir -p $2/stats
 mkdir -p $2/qualimap
-mkdir -p $2/kraken2
 mkdir -p $2/logs
 initdir=$PWD
 
 genomedir=$(basename $(dirname ${3}))
+bwa index $3
 
 # Trimming before alignment with 16 threads
 for file in $1/*R1_001.fastq.gz
@@ -151,7 +147,6 @@ process_read() {
   demix=$output_dir/filtered_bam/bam/${prefix}.demix
   echo $prefix ":: bwa alignment"
 
-  bwa index $3
   start_time_bwa=$(date +%s)
   bwa mem \
     -t 2 \
@@ -164,9 +159,12 @@ process_read() {
 
 
   pigz -p 1 $align
+  wait
   unpigz -c ${align}.gz |  samtools view -h -b | samtools sort -@ 1 -o $sorted
+  wait
   start_time_samtools=$(date +%s)
   samtools index $sorted
+  wait
   end_time_samtools=$(date +%s)
   echo "Samtools sort and index for $prefix took $((end_time_samtools - start_time_samtools)) seconds" >> $2/logs/${prefix}.log
 
