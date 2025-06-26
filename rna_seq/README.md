@@ -17,6 +17,7 @@ The final, corrected reference annotation files used in this workflow are provid
 ## Workflow Stage 1: Run `nf-core/rnaseq`
 
 This pipeline is used for read QC, alignment, and gene quantification.
+See [nf-core/rnaseq]([https://github.com/CDCgov/mycosnp-nf](https://github.com/nf-core/rnaseq)) for more information.
 
 **Input Samplesheet:**
 Create a samplesheet CSV file (`sample,fastq_1,fastq_2,strandedness`). A template is provided in `rna_seq/samplesheet_rnaseq_template.csv`.
