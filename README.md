@@ -52,7 +52,7 @@ Use the provided `environment.yml` file to create the Conda environment. This co
 conda env create -f environment.yml
 
 # Activate the environment to use the pipeline
-conda activate unlv-amplicon-pipeline
+conda activate npm-candida
 ```
 
 > **Note:** You must activate the `unlv-amplicon-pipeline` environment every time you open a new terminal session to run the pipeline.
