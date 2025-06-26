@@ -15,7 +15,7 @@ CPU=8
 }
 
 # Check for dependencies
-for cmd in "bwa" "fastp" "fgbio" "samtools" "ivar" "pigz" "unpigz" "parallel" "kraken2" "qualimap" "python3"; do
+for cmd in "bwa" "fastp" "fgbio" "samtools" "ivar" "pigz" "unpigz" "parallel" "qualimap" "python3"; do
   if ! command -v $cmd &> /dev/null; then
     echo "Error: $cmd is not installed."
     echo "Please install $cmd before running the pipeline."
@@ -68,7 +68,6 @@ echo "samtools: $(samtools --version | head -n 1)" >> $log_file
 echo "ivar: $(ivar version | head -n 1)" >> $log_file
 echo "fgbio: $(fgbio --version | head -n 1)" >> $log_file
 echo "bcftools: $(bcftools --version | head -n 1)" >> $log_file
-echo "multiqc: $(multiqc --version)" >> $log_file
 echo "qualimap: $(qualimap --version | head -n 4 | tail -n 1 )" >> $log_file
 echo "parallel: $(parallel --version | head -n 1)" >> $log_file
 echo "Number of paired ends reads found: $number_of_files" >> $log_file
