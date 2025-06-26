@@ -1,1 +1,4 @@
-
+sample,fastq_1,fastq_2
+CA_SAMPLE_01,/path/to/your/fastqs/sample1_R1.fastq.gz,/path/to/your/fastqs/sample1_R2.fastq.gz
+CA_SAMPLE_02,/path/to/your/fastqs/sample2_R1.fastq.gz,/path/to/your/fastqs/sample2_R2.fastq.gz
+CA_SAMPLE_03,/path/to/your/fastqs/sample3_R1.fastq.gz,/path/to/your/fastqs/sample3_R2.fastq.gz
