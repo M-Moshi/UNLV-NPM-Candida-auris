@@ -17,7 +17,7 @@ The final, corrected reference annotation files used in this workflow are provid
 ## Workflow Stage 1: Run `nf-core/rnaseq`
 
 This pipeline is used for read QC, alignment, and gene quantification.
-See [nf-core/rnaseq]([https://github.com/CDCgov/mycosnp-nf](https://github.com/nf-core/rnaseq)) for more information.
+See [nf-core/rnaseq](https://github.com/nf-core/rnaseq) for more information.
 
 **Input Samplesheet:**
 Create a samplesheet CSV file (`sample,fastq_1,fastq_2,strandedness`). A template is provided in `rna_seq/samplesheet_rnaseq_template.csv`.
@@ -37,6 +37,8 @@ nextflow run nf-core/rnaseq \
 ## Workflow Stage 3: Run `nf-core/differentialabundance`
 
 This pipeline performs the statistical comparison using the count data generated in Stage 1.
+See [nf-core/differentialabundance](https://github.com/nf-core/differentialabundance) for more information.
+
 
 **Input Files:**
 1.  **Counts Matrix:** The primary input, located in the `rnaseq` output directory at `rnaseq_results/star_salmon/salmon.merged.gene_counts.tsv`.
