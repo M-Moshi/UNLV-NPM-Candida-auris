@@ -1,11 +1,13 @@
 # WGS Analysis using `CDCgov/mycosnp-nf`
 
-This directory contains instructions and assets for performing whole genome SNP analysis using the `CDCgov/mycosnp-nf` Nextflow pipeline.
+This directory contains instructions and assets for performing whole genome SNP analysis using the `CDCgov/mycosnp-nf` Nextflow pipeline. See [CDCgov/mycosnp-nf](https://github.com/CDCgov/mycosnp-nf) for more information.
+
+
 
 ## Prerequisites
 
-1.  **Environment Setup:** Ensure you have completed the main environment setup described in the root `README.md`, including activating the `cauris-publication` conda environment.
-2.  **SnpEff Database:** Ensure you have successfully built the custom SnpEff database by following the instructions in `reference_genomes/README.md`.
+1.  **Environment Setup:** Ensure you have completed the main environment setup described in the root `README.md`, including activating the `npm-candida` conda environment.
+2.  **(Optional) SnpEff Database:** Ensure you have successfully built the custom SnpEff database by following the instructions in `reference_genomes/README.md`.
 
 ## Input File: Samplesheet
 
@@ -17,9 +19,9 @@ The pipeline requires a CSV samplesheet specifying the sample ID and the locatio
 * `fastq_1`: Full path to the forward read file (R1).
 * `fastq_2`: Full path to the reverse read file (R2).
 
-**Template:** A template file named `assets/samplesheet_wgs_template.csv` is provided.
+**Template:** A template file named `whole_genome_sequecning/samplesheet_wgs_template.csv` is provided.
 
-**File: `assets/samplesheet_template.csv`**
+**File: `whole_genome_sequecning/samplesheet_template.csv`**
 ```csv
 sample,fastq_1,fastq_2
 CA_SAMPLE_01,/path/to/your/fastqs/sample1_R1.fastq.gz,/path/to/your/fastqs/sample1_R2.fastq.gz
