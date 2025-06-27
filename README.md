@@ -13,15 +13,15 @@ These pipelines were used to generate the data for the NCBI BioProjects listed i
 
 This repository contains three distinct analysis workflows. Please refer to the specific `README.md` file within each directory for detailed instructions.
 
-### 1. [Amplicon Sequencing Analysis](./amplicon_sequencing/README.md)
+### 1. [Amplicon Sequencing Analysis](./amplicon_sequencing/)
 
 A parallelized pipeline for processing paired-end amplicon sequencing data. This workflow takes raw FASTQ files and performs trimming, alignment, primer trimming, variant calling (iVar), and automated variant annotation using a custom SnpEff database.
 
-### 2. [WGS Analysis using `CDCgov/mycosnp-nf`](./whole_genome_sequencing/README.md)
+### 2. [WGS Analysis using `CDCgov/mycosnp-nf`](./whole_genome_sequencing/)
 
 Instructions for performing whole-genome SNP analysis using the `CDCgov/mycosnp-nf` Nextflow pipeline. This workflow is ideal for phylogenetic analysis and outbreak investigation, and it leverages our custom-built SnpEff databases for *C. auris*.
 
-### 3. [RNA-Seq and Differential Abundance Analysis](./rna_seq/README.md)
+### 3. [RNA-Seq and Differential Abundance Analysis](./rna_seq/)
 
 A multi-stage workflow to process RNA-Seq data, from raw reads to differential gene expression analysis. This process uses the `nf-core/rnaseq` and `nf-core/differentialabundance` pipelines with specially prepared reference annotation files.
 
