@@ -7,16 +7,6 @@ This repository hosts a collection of robust and parallelized bioinformatics pip
 The primary goal of this repository is to provide a standardized, reproducible, and easy-to-use set of tools for processing various types of Candida auris sequencing data. Each workflow is designed to be self-contained and comes with its own set of instructions and reference files. 
 These pipelines were used to generate the data for the NCBI BioProjects listed in the **[Associated Datasets](#associated-datasets)** section at the bottom of this document.
 
-### Directory Structure
-```
-├── amplicon_sequencing/     # Scripts and README for the amplicon panel pipeline
-├── rna_seq/                 # Scripts and README for RNA-Seq & differential abundance analysis
-├── whole_genome_sequencing/ # Scripts and README for the WGS MycoSNP-nf pipeline
-├── reference_genomes/       # All reference genomes, panel files, and the SnpEff build script
-├── environment.yml          # Conda environment file with all software dependencies
-└── README.md                # This file
-```
-
 ---
 
 ## Analysis Workflows
@@ -35,7 +25,20 @@ Instructions for performing whole-genome SNP analysis using the `CDCgov/mycosnp-
 
 A multi-stage workflow to process RNA-Seq data, from raw reads to differential gene expression analysis. This process uses the `nf-core/rnaseq` and `nf-core/differentialabundance` pipelines with specially prepared reference annotation files.
 
+
+### Directory Structure
+```
+├── amplicon_sequencing/     # Scripts and README for the amplicon panel pipeline
+├── rna_seq/                 # Scripts and README for RNA-Seq & differential abundance analysis
+├── whole_genome_sequencing/ # Scripts and README for the WGS MycoSNP-nf pipeline
+├── reference_genomes/       # All reference genomes, panel files, and the SnpEff build script
+├── environment.yml          # Conda environment file with all software dependencies
+└── README.md                # This file
+```
+
+
 ---
+
 
 ## [Reference Genomes & SnpEff Database Management](./reference_genomes/README.md)
 
@@ -60,7 +63,7 @@ The recommended method for installation is to use **Conda**, which will handle a
 First, clone this repository to your local machine.
 
 ```bash
-git clone [https://github.com/m-moshi/UNLV-NPM-Candida-auris.git](https://github.com/m-moshi/UNLV-NPM-Candida-auris.git)
+git clone https://github.com/m-moshi/UNLV-NPM-Candida-auris.git
 cd UNLV-NPM-Candida-auris
 ```
 
