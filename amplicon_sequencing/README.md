@@ -87,7 +87,7 @@ conda activate npm-candida
 
 **Step 3: Annotate Amplicon Variantse**
 
-# Usage: ./snpeff.sh <pipeline_results_dir> <genome_name> <config_path>
+### Usage: ./snpeff.sh <pipeline_results_dir> <genome_name> <config_path>
 
 ```bash
 ./amplicon_sequencing/snpeff.sh results/ C_auris_panel reference_genomes/snpEff/snpEff.config
