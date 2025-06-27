@@ -1,9 +1,9 @@
-# UNLV Lab of Neuogenetics and Precision Medicine Amplicon Pipeline
+# UNLV Lab of Neuogenetics and Precision Medicine Wastewater Amplicon Pipeline
 
 
 A robust and parallelized bioinformatics pipeline for processing paired-end amplicon sequencing data (e.g., for SARS-CoV-2 or other targeted sequencing).
 
-This pipeline takes raw FASTQ files and performs trimming, alignment, primer sequence removal, variant calling, and generates comprehensive quality control reports.
+This pipeline takes raw FASTQ files and performs trimming, alignment, primer sequence removal, variant calling, and generates comprehensive quality control and varaint annotation reports.
 
 ## Pipeline Workflow
 
@@ -54,7 +54,7 @@ chmod +x /amplicon_sequencing/Amplicon_pipeline.sh
 
 **Step 2: Run Amplicon Pipeline**
 
-## Usage
+### Usage
 
 Once the environment is activated, you can run the pipeline using the following command structure.
 
@@ -87,9 +87,10 @@ conda activate npm-candida
 
 **Step 3: Annotate Amplicon Variantse**
 
-### Usage: ./snpeff.sh <pipeline_results_dir> <genome_name> <config_path>
+### Usage: 
 
 ```bash
+## ./snpeff.sh <pipeline_results_dir> <genome_name> <config_path>
 ./amplicon_sequencing/snpeff.sh results/ C_auris_panel reference_genomes/snpEff/snpEff.config
 ```
 
