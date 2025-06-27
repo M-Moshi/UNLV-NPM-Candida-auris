@@ -9,7 +9,7 @@ CPU=8
 {
    echo "UNLV Lab of Neuogenetics and Precision Medicine Amplicon Pipeline"
    echo ""
-   echo "Usage: ./Amplicon_pipeline.sh <input_fastq_folder>  <output_folder>  <reference.fasta>  <primers.tab>"
+   echo "Usage: ./Amplicon_pipeline.sh <input_fastq_folder>  <output_folder>  <reference.fasta>  <primers.tab>  <genes.tsv>"
    echo ""
    exit 1 # Exit script after printing help
 }
@@ -25,15 +25,15 @@ done
 
 
 # Print helpFunction in case parameters are empty
-if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ]
 then
    echo "Some or all of the parameters are empty";
    helpFunction
 fi
 
 ### Check if there are files with R1_001.fastq.gz suffix in the input folder
-if ! ls $1/*R1_001.fastq.gz &> /dev/null; then
-  echo "Error: No files with R1_001.fastq.gz suffix found in the input folder."
+if ! ls $1/*.fastq.gz &> /dev/null; then
+  echo "Error: No files with .fastq.gz suffix found in the input folder."
   echo "Please check the input folder for fastq.gz files and try again."
   exit 1
 fi
@@ -47,7 +47,9 @@ log_dir=$out_dir/logs
 mkdir -p $log_dir
 log_file="$out_dir/pipeline.log"
 fastq_files=$(ls $1/*_R1_001.fastq.gz)
+fastq_files=$(ls $1/*_1.fastq.gz)
 number_of_files=$(ls $fastq_dir/*_R1_001.fastq.gz | wc -l)
+number_of_files=$(ls $fastq_dir/*_1.fastq.gz | wc -l)
 echo "Pipeline started at $(date)" >> $log_file
 echo "Log file: $log_file" >> $log_file
 echo "FASTQ Directory: $1" >> $log_file
@@ -260,114 +262,4 @@ mv $2/filtered_tsv/all_filtered.tsv $2
 echo "Finished running pipeline at $(date)" >> $2/logs/pipeline.log
 cd $initdir
 echo "Running integrated Python statistics script..."
-python3 - "$2" << 'EOF'
-import os
-import glob
-import pandas as pd
-import sys
-
-# Use command-line arguments for output_dir
-# sys.argv[0] is the script name ('-'), sys.argv[1] is the first argument passed
-if len(sys.argv) < 2:
-    print("Error: Output directory not provided to Python script.")
-    sys.exit(1)
-output_dir = sys.argv[1]
-
-depth_dir = os.path.join(output_dir, 'depth')
-cov_dir = os.path.join(output_dir, 'cov')
-stat_dir = os.path.join(output_dir, 'stats') # Corrected from 'stat' to match your bash script
-
-# Ensure the statistics directory exists
-os.makedirs(stat_dir, exist_ok=True)
-
-# Print all files in the depth directory (for verification)
-# print(f"Files in {depth_dir}:")
-# for file in os.listdir(depth_dir):
-#     print(file)
-
-# List to store all output_data DataFrames
-all_data = []
-
-# Process each file in the depth directory
-for depth_file in glob.glob(os.path.join(depth_dir, '*.udepth')):
-    # Improved sample name extraction to be more robust
-    sample_name = os.path.basename(depth_file).replace('.udepth', '')
-    
-    # Initialize placeholders for data
-    genome = 'N/A'
-    length = 0
-    mean_depth = 0.0
-    median_depth = 0.0
-    numreads = 0
-    covered1 = 0.0
-    covered10 = 0.0
-    coveredby30 = 0.0
-    covered50 = 0.0
-    covered100 = 0.0
-    
-    # Process depth files
-    try:
-        depth_data = pd.read_csv(depth_file, sep='\t', names=['genome', 'pos', 'depth'])
-        if not depth_data.empty:
-            genome = depth_data['genome'].iloc[0]
-            length = len(depth_data)
-            mean_depth = depth_data['depth'].mean()
-            median_depth = depth_data['depth'].median()
-            # Calculate coverage percentages
-            if length > 0:
-                covered1 = (depth_data['depth'] >= 1).sum() / length * 100
-                covered10 = (depth_data['depth'] >= 10).sum() / length * 100
-                coveredby30 = (depth_data['depth'] >= 30).sum() / length * 100
-                covered50 = (depth_data['depth'] >= 50).sum() / length * 100
-                covered100 = (depth_data['depth'] >= 100).sum() / length * 100
-    except pd.errors.EmptyDataError:
-        print(f"Warning: Depth file {depth_file} is empty.")
-
-    # Match coverage files for each sample
-    matching_cov_files = glob.glob(os.path.join(cov_dir, f'{sample_name}.cov'))
-    
-    # Process coverage files (if any)
-    if matching_cov_files:
-        cov_file = matching_cov_files[0]
-        try:
-            # samtools coverage output has a header line, so we skip it.
-            cov_data = pd.read_csv(cov_file, sep='\t', header=0)
-            if not cov_data.empty and 'numreads' in cov_data.columns:
-                numreads = cov_data['numreads'].iloc[0]
-        except (pd.errors.EmptyDataError, IndexError):
-            print(f"Warning: Could not process coverage file {cov_file}.")
-
-
-    # Prepare the output DataFrame for this sample
-    output_data = pd.DataFrame({
-        'Sample Name': [sample_name],
-        'Genome': [genome],
-        'Length': [length],
-        'Total Reads': [numreads],
-        'Mean Depth': [f"{mean_depth:.2f}"],
-        'Median Depth': [median_depth],
-        'Coveredby1x': [f"{covered1:.2f}%"],
-        'Coveredby10x': [f"{covered10:.2f}%"],
-        'Coveredby30x': [f"{coveredby30:.2f}%"],
-        'Coveredby50x': [f"{covered50:.2f}%"],
-        'Coveredby100x': [f"{covered100:.2f}%"],
-    })
-
-    # Save individual sample statistics
-    output_file = os.path.join(stat_dir, f'{sample_name}.stats.tsv')
-    output_data.to_csv(output_file, sep='\t', index=False)
-    # print(f"Saved output for sample {sample_name} to {output_file}")
-
-    # Append to the list for combined output later
-    all_data.append(output_data)
-
-# Combine all individual sample DataFrames into one and save
-if all_data:
-    combined_data = pd.concat(all_data, ignore_index=True)
-    combined_file = os.path.join(output_dir, 'combined_stats.tsv')
-    combined_data.to_csv(combined_file, sep='\t', index=False)
-    print(f"Successfully generated combined statistics report at: {combined_file}")
-else:
-    print("Warning: No data was processed to generate a combined statistics report.")
-
-EOF
+python3 gene_coverage.py $2 $5
