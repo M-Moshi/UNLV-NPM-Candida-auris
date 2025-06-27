@@ -4,7 +4,8 @@ This repository hosts a collection of robust and parallelized bioinformatics pip
 
 ## Project Overview
 
-The primary goal of this repository is to provide a standardized, reproducible, and easy-to-use set of tools for processing various types of sequencing data. Each workflow is designed to be self-contained and comes with its own set of instructions and reference files.
+The primary goal of this repository is to provide a standardized, reproducible, and easy-to-use set of tools for processing various types of Candida auris sequencing data. Each workflow is designed to be self-contained and comes with its own set of instructions and reference files. 
+These pipelines were used to generate the data for the NCBI BioProjects listed in the **[Associated Datasets](#associated-datasets)** section at the bottom of this document.
 
 ### Directory Structure
 ```
@@ -75,3 +76,18 @@ conda env create -f environment.yml
 conda activate npm-candida
 ```
 
+
+---
+
+## Associated Datasets
+
+The workflows in this repository were used for the analysis of the following publicly available datasets:
+
+* **Whole Genome Sequencing (WGS) of *Candida auris* isolated from wastewater**
+    * [NCBI BioProject: PRJNA1279182](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1279182)
+
+* **RNA sequencing of *Candida auris* isolated from wastewater**
+    * [NCBI BioProject: PRJNA1279245](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1279245)
+
+* **Targeted amplicon sequencing of *Candida auris* antifungal resistance genes from wastewater**
+    * [NCBI BioProject: PRJNA1279255](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1279255)
