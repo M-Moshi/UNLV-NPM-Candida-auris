@@ -52,7 +52,7 @@ See [nf-core/differentialabundance](https://github.com/nf-core/differentialabund
 
 **Command:**
 ```bash
-nextflow run nf-core/differentialabundance -r 2.0.0 \
+nextflow run nf-core/differentialabundance \
     -profile docker \
     --input /path/to/your/design.csv \
     --contrasts /path/to/your/contrasts.csv \
