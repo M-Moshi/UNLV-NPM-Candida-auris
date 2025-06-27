@@ -35,7 +35,7 @@ The command below will execute the MycoSNP pipeline using the specified version 
 
 **Step 1 (Optional): Pull the pipeline and container**
 ```bash
-nextflow pull CDCgov/mycosnp-nf -r 1.5
+nextflow pull CDCgov/mycosnp-nf
 ```
 
 **Step 2: Run the analysis**
@@ -45,7 +45,7 @@ nextflow run CDCgov/mycosnp-nf \
     --input ./path/to/your_wgs_samplesheet.csv \
     --fasta ../reference_genomes/candida_auris_b11205/GCA_016772135.1_genomic.fna \
     --outdir ./wgs_results \
-    --snpeffconfig ./assets/snpeff/snpEff.config
+    --snpeffconfig ./reference_genomes/snpeff/snpEff.config
 ```
 
 ### Command Parameters Explained
