@@ -34,7 +34,7 @@ nextflow run nf-core/rnaseq \
 *We use the `_exons.gtf` file here as it contains the necessary features for alignment and quantification.*
 
 
-## Workflow Stage 3: Run `nf-core/differentialabundance`
+## Workflow Stage 2: Run `nf-core/differentialabundance`
 
 This pipeline performs the statistical comparison using the count data generated in Stage 1.
 See [nf-core/differentialabundance](https://github.com/nf-core/differentialabundance) for more information.
@@ -57,3 +57,16 @@ nextflow run nf-core/differentialabundance -r 2.0.0 \
     --outdir ./differential_results
 ```
 *We use the final `_transcripts_annotated.gtf` here because it contains the `transcript` features required by this specific pipeline.*
+
+
+---
+
+## Workflow Stage 3: Consensus Pathway Analysis
+
+To understand the biological meaning behind the differential expression results, we performed a comprehensive pathway analysis using the **R package for Consensus Pathway Analysis (RCPA)**.
+
+This framework allowed us to identify which biological pathways were significantly impacted by the different stress conditions tested in our experiments. Because direct annotations for *Candida auris* were not available in the KEGG and Gene Ontology (GO) databases, we first mapped the genes using BLAST with a stringent similarity threshold.
+
+We then used the `runGeneSetAnalysis()` function from the RCPA package to perform Fast Gene Set Enrichment Analysis (FGSEA) on our DESeq2 results. This revealed the distinct pathway signatures associated with each experimental condition.
+
+-   **RCPA GitHub Repository**: [tinnlab/RCPA](https://github.com/tinnlab/RCPA](https://github.com/tinnlab/RCPA)
