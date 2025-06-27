@@ -1,36 +1,56 @@
-# Amplicon Pipeline
+# UNLV NPM Candida auris Bioinformatics Workflows
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+This repository hosts a collection of robust and parallelized bioinformatics pipelines developed at the UNLV Laboratory of Neuogenetics and Precision Medicine for the analysis of *Candida auris* sequencing data. It includes distinct workflows for amplicon, whole-genome (WGS), and RNA-Seq data.
 
-A robust and parallelized bioinformatics pipeline for processing paired-end amplicon sequencing data (e.g., for SARS-CoV-2 or other targeted sequencing).
+## Project Overview
 
-This pipeline takes raw FASTQ files and performs trimming, alignment, primer sequence removal, variant calling, and generates comprehensive quality control reports.
+The primary goal of this repository is to provide a standardized, reproducible, and easy-to-use set of tools for processing various types of sequencing data. Each workflow is designed to be self-contained and comes with its own set of instructions and reference files.
 
-## Pipeline Workflow
-
-The script automates the following sequence of analysis steps:
-
+### Directory Structure
 ```
-Input FASTQ files (R1/R2)
-│
-└───▶ 1. fastp: Trim adapters and low-quality bases
-    │
-    └───▶ 2. bwa-mem: Align trimmed reads to a reference genome
-        │
-        └───▶ 3. samtools: Convert SAM to sorted, indexed BAM
-            │
-            └───▶ 4. fgbio: Trim primer sequences from alignments
-                │
-                └───▶ 5. ivar: Call variants and generate consensus
-                    │
-                    └───▶ 6. samtools/qualimap: Generate QC & coverage metrics
-                        │
-                        └───▶ 7. Python/Pandas: Aggregate statistics
-                            │
-                            └───▶ Final Reports (TSV, Qualimap, Logs)
+├── amplicon_sequencing/     # Scripts and README for the amplicon panel pipeline
+├── rna_seq/                 # Scripts and README for RNA-Seq & differential abundance analysis
+├── whole_genome_sequencing/ # Scripts and README for the WGS MycoSNP-nf pipeline
+├── reference_genomes/       # All reference genomes, panel files, and the SnpEff build script
+├── environment.yml          # Conda environment file with all software dependencies
+└── README.md                # This file
 ```
 
-## Installation
+---
+
+## Analysis Workflows
+
+This repository contains three distinct analysis workflows. Please refer to the specific `README.md` file within each directory for detailed instructions.
+
+### 1. [Amplicon Sequencing Analysis](./amplicon_sequencing/README.md)
+
+A parallelized pipeline for processing paired-end amplicon sequencing data. This workflow takes raw FASTQ files and performs trimming, alignment, primer trimming, variant calling (iVar), and automated variant annotation using a custom SnpEff database.
+
+### 2. [WGS Analysis using `CDCgov/mycosnp-nf`](./whole_genome_sequencing/README.md)
+
+Instructions for performing whole-genome SNP analysis using the `CDCgov/mycosnp-nf` Nextflow pipeline. This workflow is ideal for phylogenetic analysis and outbreak investigation, and it leverages our custom-built SnpEff databases for *C. auris*.
+
+### 3. [RNA-Seq and Differential Abundance Analysis](./rna_seq/README.md)
+
+A multi-stage workflow to process RNA-Seq data, from raw reads to differential gene expression analysis. This process uses the `nf-core/rnaseq` and `nf-core/differentialabundance` pipelines with specially prepared reference annotation files.
+
+---
+
+## [Reference Genomes & SnpEff Database Management](./reference_genomes/README.md)
+
+This project relies on custom-built reference genomes and SnpEff databases. The `reference_genomes` directory contains all the necessary source files and an automated script (`build_custom_snpeff_dbs.sh`) to build the databases required by the annotation steps in the other pipelines.
+
+### Available References
+
+* **`candida_auris_b11205` & `candida_auris_b11221`**: Primary references for **Whole Genome Sequencing (WGS)** analysis.
+* **`candida_auris_b8441`**: The reference genome used for **RNA-Seq analysis**.
+* **`C_auris_panel`**: A custom-built reference panel for targeted **amplicon sequencing**.
+
+Before running the WGS or Amplicon pipelines, you must first build these databases. Please see the **[detailed instructions in the `reference_genomes` directory](./reference_genomes/README.md)**.
+
+---
+
+## Installation and Setup
 
 The recommended method for installation is to use **Conda**, which will handle all software dependencies automatically within a self-contained environment.
 
@@ -39,76 +59,19 @@ The recommended method for installation is to use **Conda**, which will handle a
 First, clone this repository to your local machine.
 
 ```bash
-git clone https://github.com/moshi321/UNLV-NPM-Candida-auris.git
+git clone [https://github.com/m-moshi/UNLV-NPM-Candida-auris.git](https://github.com/m-moshi/UNLV-NPM-Candida-auris.git)
 cd UNLV-NPM-Candida-auris
 ```
 
 **Step 2: Create and Activate the Conda Environment**
 
-Use the provided `environment.yml` file to create the Conda environment. This command installs all the required tools (`bwa`, `samtools`, `pandas`, etc.).
+Use the provided environment.yml file to create the Conda environment. This command installs all the required tools (bwa, samtools, snpEff, nextflow, pandas, etc.).
 
 ```bash
 # Create the environment (this may take several minutes)
 conda env create -f environment.yml
 
-# Activate the environment to use the pipeline
+# Activate the environment to use the pipelines
 conda activate npm-candida
 ```
 
-> **Note:** You must activate the `unlv-amplicon-pipeline` environment every time you open a new terminal session to run the pipeline.
-
-**Step 3: Make the Pipeline Executable**
-
-Make the main script executable.
-
-```bash
-chmod +x Amplicon_pipeline.sh
-```
-
-## Usage
-
-Once the environment is activated, you can run the pipeline using the following command structure.
-
-```bash
-./Amplicon_pipeline.sh <input_fastq_folder> <output_folder> <reference.fasta> <primers.tab>
-```
-
-### Arguments
-
-* `<input_fastq_folder>`: Path to the directory containing paired-end `_R1_001.fastq.gz` and `_R2_001.fastq.gz` files.
-* `<output_folder>`: Path to the directory where all results will be saved. It will be created if it doesn't exist.
-* `<reference.fasta>`: Path to the reference genome in FASTA format.
-* `<primers.tab>`: Path to a tab-separated file defining the primer scheme, required by `fgbio TrimPrimers`.
-
-### Example Command
-
-```bash
-# Ensure the conda environment is active
-conda activate unlv-amplicon-pipeline
-
-# Run the pipeline
-./Amplicon_pipeline.sh \
-  ./data/raw_fastqs/ \
-  ./results/run01/ \
-  ./reference/MN908947.3.fasta \
-  ./reference/artic_v3_primers.tsv
-```
-
-## Output Structure
-
-The pipeline will generate a structured output directory containing all results:
-
-```
-<output_folder>/
-├── bam/                # Sorted BAM files after alignment
-├── filtered_bam/       # Final BAM files after primer trimming
-├── cov/                # Per-sample coverage reports from samtools
-├── depth/              # Per-base depth files
-├── filtered_tsv/       # Per-sample variant calls from iVar
-├── logs/               # Log files for the pipeline run and individual tools
-├── qualimap/           # Detailed HTML reports from Qualimap
-├── stats/              # Per-sample summary statistics
-├── trimmed_fastq/      # FASTQ files after fastp trimming
-├── all_filtered.tsv    # Merged TSV of all variants from all samples
-└── combined_stats.tsv  # A summary report of key metrics for all samples
-```
