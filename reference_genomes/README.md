@@ -21,7 +21,7 @@ This directory contains the reference genome and annotation files required for t
 ### `C_auris_panel`
 
 -   **Use Case**: This is a custom-built reference used for a targeted **amplicon panel analysis**. Instead of whole chromosomes, it contains specific gene or marker sequences of interest.
--   **Key Files**: Contains the panel sequences (**`C_auris_panel.fa`**) and the corresponding primer tab file for trimming (**`C_auris_panel.primer.tab`**). The annotation in GFF format (**`C_auris_panel.gff`**) defines the regions of interest within the panel and the TSV bed file (**`C_auris_panel.tsv`**) is provides coordinates for gene coverage calculations.
+-   **Key Files**: Contains the panel sequences (**`C_auris_panel.fasta`**) and the corresponding primer tab file for trimming (**`C_auris_panel.primer.tab`**). The annotation in GFF format (**`C_auris_panel.gff`**) defines the regions of interest within the panel and the TSV bed file (**`C_auris_panel.tsv`**) is provides coordinates for gene coverage calculations.
 
 
 
