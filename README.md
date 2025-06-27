@@ -1,4 +1,4 @@
-# UNLV NPM Candida auris Bioinformatics Workflows
+# UNLV NPM *Candida auris* Bioinformatics Workflows
 
 This repository hosts a collection of robust and parallelized bioinformatics pipelines developed at the UNLV Laboratory of Neuogenetics and Precision Medicine for the analysis of *Candida auris* sequencing data. It includes distinct workflows for amplicon, whole-genome (WGS), and RNA-Seq data.
 
