@@ -6,21 +6,21 @@ This directory contains the reference genome and annotation files required for t
 
 ### `candida_auris_b11205` and `candida_auris_b11221`
 
--   **Use Case**: These two directories contain the primary reference genomes for **Whole Genome Sequencing (WGS)** analysis.
+-   **Use Case**: These two directories contain the primary reference genomes for the **Whole Genome Sequencing (WGS)** analysis.
 -   **Key Files**: Each contains a genome sequence (**`.fna`**) and a corresponding rich annotation file in GenBank format (**`.gbk`**). These are used for variant calling and annotation in the WGS pipeline.
 
 ---
 
 ### `candida_auris_b8441`
 
--   **Use Case**: This reference genome is specifically used for **RNA-Seq analysis**, such as differential gene expression.
+-   **Use Case**: This reference genome is specifically used for the **RNA-Seq analysis**.
 -   **Key Files**: Contains the genome sequence (**`.fasta`**) and gene models in GFF/GTF format (**`.gtf`**). The GTF format is essential for correctly quantifying transcript abundance.
 
 ---
 
 ### `C_auris_panel`
 
--   **Use Case**: This is a custom-built reference used for a targeted **amplicon panel analysis**. Instead of whole chromosomes, it contains specific gene or marker sequences of interest.
+-   **Use Case**: This is a custom-built reference used for the targeted **amplicon panel analysis**. Instead of whole genome, it contains specific gene and marker sequences of interest.
 -   **Key Files**: Contains the panel sequences (**`C_auris_panel.fasta`**) and the corresponding primer tab file for trimming (**`C_auris_panel.primer.tab`**). The annotation in GFF format (**`C_auris_panel.gff`**) defines the regions of interest within the panel and the TSV bed file (**`C_auris_panel.tsv`**) is provides coordinates for gene coverage calculations.
 
 
