@@ -35,21 +35,13 @@ Input FASTQ files (R1/R2)
 
 The recommended method for installation is to use **Conda**, which will handle all software dependencies automatically within a self-contained environment.
 
-**Step 1: Clone the Repository**
-
-First, clone this repository to your local machine.
-
-```bash
-git clone https://github.com/m-moshi/UNLV-NPM-Candida-auris.git
-cd UNLV-NPM-Candida-auris
-```
 
 **Step 1: Make the Pipeline Executable**
 
 Make the main script executable.
 
 ```bash
-chmod +x /amplicon_sequencing/Amplicon_pipeline.sh
+chmod +x ./amplicon_sequencing/Amplicon_pipeline.sh
 ```
 
 **Step 2: Run Amplicon Pipeline**
