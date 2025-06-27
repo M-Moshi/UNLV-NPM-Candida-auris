@@ -24,6 +24,8 @@ This directory contains the reference genome and annotation files required for t
 -   **Key Files**: Contains the panel sequences (**`C_auris_panel.fa`**) and the corresponding primer tab file for trimming (**`C_auris_panel.primer.tab`**). The annotation in GFF format (**`C_auris_panel.gff`**) defines the regions of interest within the panel and the TSV bed file (**`C_auris_panel.tsv`**) is provides coordinates for gene coverage calculations.
 
 
+
+
 # Automated SnpEff Database Management
 
 This document explains how to use the automated `build_custom_snpeff_dbs.sh` script to prepare all necessary SnpEff databases for this project. This script replaces the need for manual setup.
