@@ -69,4 +69,4 @@ This framework allowed us to identify which biological pathways were significant
 
 We then used the `runGeneSetAnalysis()` function from the RCPA package to perform Fast Gene Set Enrichment Analysis (FGSEA) on our DESeq2 results. This revealed the distinct pathway signatures associated with each experimental condition.
 
--   **RCPA GitHub Repository**: [tinnlab/RCPA](https://github.com/tinnlab/RCPA](https://github.com/tinnlab/RCPA)
+-   **RCPA GitHub Repository**: [tinnlab/RCPA](https://github.com/tinnlab/RCPA)
