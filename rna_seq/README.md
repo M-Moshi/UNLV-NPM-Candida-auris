@@ -5,6 +5,11 @@ This document details the multi-stage workflow used to process RNA-Seq data, fro
 ## Prerequisites
 
 * **Environment Setup:** Ensure you have completed the main environment setup described in the root `README.md`, including activating the `npm-candida` conda environment.
+* **Pull the containers**
+```bash
+nextflow pull nf-core/rnaseq
+nextflow pull nf-core/differentialabundance
+```
 
 ## A Note on Reference Annotation Files
 
