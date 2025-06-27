@@ -1,62 +1,63 @@
-# Reference Genomes and SnpEff Database Preparation
+# Reference Genomes
 
-The genome and annotation files in this directory are used by the analysis workflows. Before running the WGS pipeline (`mycosnp-nf`), you must build a custom SnpEff database for variant annotation.
+This directory contains the reference genome and annotation files required for the various analysis pipelines in this project. Each subdirectory corresponds to a specific reference genome or panel used for a distinct purpose.
 
-## Build the Custom SnpEff Database
+---
 
-**Step 1: Create the SnpEff Directory Structure**
+### `candida_auris_b11205` and `candida_auris_b11221`
 
-The configuration expects a specific directory layout. From the project's root directory, run the following command to create it:
+-   **Use Case**: These two directories contain the primary reference genomes for **Whole Genome Sequencing (WGS)** analysis.
+-   **Key Files**: Each contains a genome sequence (**`.fna`**) and a corresponding rich annotation file in GenBank format (**`.gbk`**). These are used for variant calling and annotation in the WGS pipeline.
+
+---
+
+### `candida_auris_b8441`
+
+-   **Use Case**: This reference genome is specifically used for **RNA-Seq analysis**, such as differential gene expression.
+-   **Key Files**: Contains the genome sequence (**`.fasta`**) and gene models in GFF/GTF format (**`.gtf`**). The GTF format is essential for correctly quantifying transcript abundance.
+
+---
+
+### `C_auris_panel`
+
+-   **Use Case**: This is a custom-built reference used for a targeted **amplicon panel analysis**. Instead of whole chromosomes, it contains specific gene or marker sequences of interest.
+-   **Key Files**: Contains the panel sequences (**`sequences.fa`**) and a corresponding simple annotation in GFF format (**`genes.gff`**) that defines the regions of interest within the panel.
+
+
+# Automated SnpEff Database Management
+
+This document explains how to use the automated `build_custom_snpeff_dbs.sh` script to prepare all necessary SnpEff databases for this project. This script replaces the need for manual setup.
+
+## Overview
+
+The `build_custom_snpeff_dbs.sh` script is designed to automate the creation of multiple SnpEff databases from all genome folders located in this `reference_genomes` directory. It centralizes the SnpEff configuration and data into a single `reference_genomes/snpEff` directory, ensuring consistency and ease of use.
+
+The script intelligently handles different annotation formats (GenBank and GFF) and applies specific configurations for special cases like the `C_auris_panel`.
+
+You should run this script once during the initial project setup and again anytime you add a new reference genome.
+
+## How to Build the Databases
+
+The script requires you to be in the `reference_genomes` directory. This is the most reliable way to ensure SnpEff can always find its files.
+
+**Step 1: Get the Absolute Path**
+
+First, navigate into this directory.
 
 ```bash
-mkdir -p 02_whole_genome_sequencing/assets/snpeff/data/Candida_auris_B11205
+cd /path/to/your/project/reference_genomes
+
+# Make sure your conda environment is active
+conda activate npm-candida
+
+# Make build_custom_snpeff_dbs.sh executable
+chmod +x build_custom_snpeff_dbs.sh
+
+# Run the script from this directory
+./build_custom_snpeff_dbs.sh
 ```
 
-**Step 2: Create a Custom `snpEff.config` File**
 
-Create a file named `snpEff.config` inside `02_whole_genome_sequencing/assets/snpeff/`. This file tells SnpEff about our new genome.
 
-**File: `02_whole_genome_sequencing/assets/snpeff/snpEff.config`**
-```
-# --- snpEff configuration file ---
-# The path to the SnpEff data directory within this structure
-data.dir = ./data/
 
-# Define our custom genome
-# The key 'Candida_auris_B11205' must match the directory name under 'data/'
-Candida_auris_B11205.genome : Candida auris B11205
-```
 
-**Step 3: Link Reference Files into the SnpEff Directory**
-
-Instead of copying, we can create symbolic links (shortcuts) to the reference files. This avoids data duplication. The files must be renamed to what SnpEff expects (`genes.gtf` and `genome.fa`).
-
-```bash
-# Link the GTF file
-ln -s ../../../../reference_genomes/candida_auris_b11205/GCA_016772135.1_genomic.gtf \
-      02_whole_genome_sequencing/assets/snpeff/data/Candida_auris_B11205/genes.gtf
-
-# Link the FASTA file
-ln -s ../../../../reference_genomes/candida_auris_b11205/GCA_016772135.1_genomic.fna \
-      02_whole_genome_sequencing/assets/snpeff/data/Candida_auris_B11205/genome.fa
-```
-
-**Step 4: Build the Database**
-
-Finally, activate the Conda environment and run the SnpEff `build` command from the correct directory.
-
-```bash
-# Activate the environment first
-conda activate cauris-publication
-
-# Navigate into the snpEff directory to run the build command
-cd 02_whole_genome_sequencing/assets/snpeff/
-
-# Build the database using our custom config file
-snpEff build -c ./snpEff.config -gtf22 -v Candida_auris_B11205
-
-# Navigate back to the project root directory
-cd ../../../..
-```
-
-After these steps, a `snpEffectDb.bin` file will be created in the `.../snpeff/data/Candida_auris_B11205/` directory. The setup is now complete, and you can run the WGS pipeline as described in the main `README.md`.
