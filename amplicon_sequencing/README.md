@@ -24,9 +24,11 @@ Input FASTQ files (R1/R2)
                     │
                     └───▶ 6. samtools/qualimap: Generate QC & coverage metrics
                         │
-                        └───▶ 7. Python/Pandas: Aggregate statistics
+                        └───▶ 7. Annotation: Coversion of iVar to VCF and annotation using snpEff and snpSift
                             │
-                            └───▶ Final Reports (TSV, Qualimap, Logs)
+                            └───▶ 8. Python: Aggregate statistics
+                                │
+                                └───▶ Final Reports (TSV, Qualimap, Logs)
 ```
 
 ## Installation
@@ -38,38 +40,26 @@ The recommended method for installation is to use **Conda**, which will handle a
 First, clone this repository to your local machine.
 
 ```bash
-git clone https://github.com/moshi321/UNLV-NPM-Candida-auris.git
+git clone https://github.com/m-moshi/UNLV-NPM-Candida-auris.git
 cd UNLV-NPM-Candida-auris
 ```
 
-**Step 2: Create and Activate the Conda Environment**
-
-Use the provided `environment.yml` file to create the Conda environment. This command installs all the required tools (`bwa`, `samtools`, `pandas`, etc.).
-
-```bash
-# Create the environment (this may take several minutes)
-conda env create -f environment.yml
-
-# Activate the environment to use the pipeline
-conda activate unlv-amplicon-pipeline
-```
-
-> **Note:** You must activate the `unlv-amplicon-pipeline` environment every time you open a new terminal session to run the pipeline.
-
-**Step 3: Make the Pipeline Executable**
+**Step 1: Make the Pipeline Executable**
 
 Make the main script executable.
 
 ```bash
-chmod +x Amplicon_pipeline.sh
+chmod +x /amplicon_sequencing/Amplicon_pipeline.sh
 ```
+
+**Step 2: Run Amplicon Pipeline**
 
 ## Usage
 
 Once the environment is activated, you can run the pipeline using the following command structure.
 
 ```bash
-./Amplicon_pipeline.sh <input_fastq_folder> <output_folder> <reference.fasta> <primers.tab>
+./amplicon_sequencing/Amplicon_pipeline.sh <input_fastq_folder> <output_folder> <reference.fasta> <primers.tab> <genes.tsv>
 ```
 
 ### Arguments
@@ -78,20 +68,33 @@ Once the environment is activated, you can run the pipeline using the following 
 * `<output_folder>`: Path to the directory where all results will be saved. It will be created if it doesn't exist.
 * `<reference.fasta>`: Path to the reference genome in FASTA format.
 * `<primers.tab>`: Path to a tab-separated file defining the primer scheme, required by `fgbio TrimPrimers`.
+* `<genes.tsv>`: Path to a tab-separated file defining the coordinates of the genes within the panel (ex. `C_auris_panel.tsv`).
 
 ### Example Command
 
 ```bash
 # Ensure the conda environment is active
-conda activate unlv-amplicon-pipeline
+conda activate npm-candida
 
 # Run the pipeline
-./Amplicon_pipeline.sh \
-  ./data/raw_fastqs/ \
-  ./results/run01/ \
-  ./reference/MN908947.3.fasta \
-  ./reference/artic_v3_primers.tsv
+./amplicon_sequencing/Amplicon_pipeline.sh \
+  ./raw_fastqs/ \
+  ./results/ \
+  ./reference_genomes/C_auris_panel/C_auris_panel.fasta \
+  ./reference_genomes/C_auris_panel/C_auris_panel.primers.tab \
+  ./reference_genomes/C_auris_panel/C_auris_panel.tsv
 ```
+
+**Step 3: Annotate Amplicon Variantse**
+
+# Usage: ./snpeff.sh <pipeline_results_dir> <genome_name> <config_path>
+
+```bash
+./amplicon_sequencing/snpeff.sh results/ C_auris_panel reference_genomes/snpEff/snpEff.config
+```
+
+
+
 
 ## Output Structure
 
@@ -99,15 +102,20 @@ The pipeline will generate a structured output directory containing all results:
 
 ```
 <output_folder>/
+├── annotation/         # Annotated VCFs 
 ├── bam/                # Sorted BAM files after alignment
-├── filtered_bam/       # Final BAM files after primer trimming
 ├── cov/                # Per-sample coverage reports from samtools
+├── coverage_analysis/  # Gene coverage report sheet
 ├── depth/              # Per-base depth files
+├── filtered_bam/       # Final BAM files after primer trimming
 ├── filtered_tsv/       # Per-sample variant calls from iVar
+├── histogram/          # Histogram of coverage across reference fasta
 ├── logs/               # Log files for the pipeline run and individual tools
 ├── qualimap/           # Detailed HTML reports from Qualimap
+├── rawtsv/             # Unfiltered raw TSV variant calls from iVar
+├── sam/                # Raw SAM file from BWA-MEM
 ├── stats/              # Per-sample summary statistics
 ├── trimmed_fastq/      # FASTQ files after fastp trimming
-├── all_filtered.tsv    # Merged TSV of all variants from all samples
-└── combined_stats.tsv  # A summary report of key metrics for all samples
+├── tsv/                # Final, combined reports for each sample
+└── vcf/                # VCF files created during annotation
 ```
