@@ -33,7 +33,7 @@ CA_SAMPLE_03,/path/to/your/fastqs/sample3_R1.fastq.gz,/path/to/your/fastqs/sampl
 
 The command below will execute the MycoSNP pipeline using the specified version and parameters.
 
-**Step 1 (Optional): Pull the pipeline and container**
+**Step 1 : Pull the container**
 ```bash
 nextflow pull CDCgov/mycosnp-nf
 ```
